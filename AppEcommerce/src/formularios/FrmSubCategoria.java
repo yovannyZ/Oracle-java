@@ -266,7 +266,7 @@ public class FrmSubCategoria extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void txtBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscarActionPerformed
-        Listar(this.txtBuscar.getText());
+        Buscar(this.txtBuscar.getText());
     }//GEN-LAST:event_txtBuscarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
@@ -400,7 +400,7 @@ public class FrmSubCategoria extends javax.swing.JFrame {
             rpt = subCategoriaDao.Agregar(subCategoria);
 
             if(rpt){
-                JOptionPane.showMessageDialog(null, "Categoria agregada correctamente");
+                JOptionPane.showMessageDialog(null, "Sub Categoria agregada correctamente");
             }else{
                 JOptionPane.showMessageDialog(null, "No se agrego la categoría");
             }
@@ -421,7 +421,15 @@ public class FrmSubCategoria extends javax.swing.JFrame {
         this.txtCodigo.setEnabled(false);
         this.txtCodigo.setText(subCategoria.getCodigo());
         this.txtDescripcion.setText(subCategoria.getNombre());
-        this.cboCategoria.setSelectedItem((Categoria)subCategoria.getCategoria());
+     
+        for (int i=0;i < cboCategoria.getItemCount() ;i++) {
+            Categoria categoria1= cboCategoria.getItemAt(i);
+     
+            if(categoria1.getCodigo().equalsIgnoreCase(subCategoria.getCategoria().getCodigo())){
+                this.cboCategoria.setSelectedIndex(i);
+            }
+        }
+        
         this.tpPanel.setSelectedIndex(1);
     }
 
@@ -437,9 +445,9 @@ public class FrmSubCategoria extends javax.swing.JFrame {
             rpt = subCategoriaDao.Actualizar(subCategoria);
 
             if(rpt){
-                JOptionPane.showMessageDialog(null, "Categoria actualizada correctamente");
+                JOptionPane.showMessageDialog(null, "Sub Categoria actualizada correctamente");
             }else{
-                JOptionPane.showMessageDialog(null, "No se actualizo la categoría");
+                JOptionPane.showMessageDialog(null, "No se actualizo la sub categoría");
             }
 
             Limpiar();
