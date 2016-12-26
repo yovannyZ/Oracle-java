@@ -27,6 +27,7 @@ public class FrmMenu extends javax.swing.JFrame {
     public FrmMenu() {
         initComponents();
         CargarMenus();
+        
        
     }
 
@@ -99,7 +100,7 @@ public class FrmMenu extends javax.swing.JFrame {
 
     private void CargarMenus(){
         MenuDAO menuDao= new MenuDAO();
-        List<Menu> listaMenus = menuDao.ListarMenus(2);//Perfil del usuario
+        List<Menu> listaMenus = menuDao.ListarMenus(1);//Perfil del usuario
         for (int i = 0; i < listaMenus.size(); i++) {
             
             if(listaMenus.size() > 0){
@@ -111,8 +112,10 @@ public class FrmMenu extends javax.swing.JFrame {
                  for (int j = 0; j < listaMenus.size(); j++) {
                      
                      if(listaMenus.get(i).getIdMenu() == listaMenus.get(j).getIdMenuPadre()){
-                         JMenuItem menuItem = new JMenuItem(listaMenus.get(j).getDescripcion());
-                         menu.add(menuItem);
+                         
+                         
+                             
+                         addMenuItems(menu,listaMenus.get(j).getDescripcion(),listaMenus.get(j).getUrlMenu(),listaMenus.get(j).isHabilitado());
                      }   
                 }  
             }
@@ -120,11 +123,12 @@ public class FrmMenu extends javax.swing.JFrame {
         }
     }
     
-    /*private void addMenuItems(JMenu menu, String[] args[]) {
-		for (int i = 0; i < args.length; i++) {
-			MyMenuItem m = new MyMenuItem(args[i][0], args[i][1]);
-			menu.add(m);
-			m.addActionListener(m);
-		}
-	}*/
+    private void addMenuItems(JMenu menu, String texto , String frm, boolean habilitado) {
+		
+            MyMenuItem m = new MyMenuItem(texto, frm);
+            m.setEnabled(habilitado);
+            menu.add(m);
+            m.addActionListener(m);
+
+	}
 }

@@ -7,6 +7,9 @@ package util;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFrame;
 
 /**
  *
@@ -18,8 +21,8 @@ public class MyMenuItem extends javax.swing.JMenuItem implements ActionListener{
 
     private String message;
 
-    public MyMenuItem(String text, String message) {
-	super(text);
+    public MyMenuItem(String text, String frm) {
+     super(text);
      this.message = message;
      }
 
@@ -36,7 +39,16 @@ public class MyMenuItem extends javax.swing.JMenuItem implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() instanceof MyMenuItem) {
 		String message = ((MyMenuItem)e.getSource()).getMessage();
-		javax.swing.JOptionPane.showMessageDialog(null, message);
+		
+            try {
+                ((JFrame) Class.forName(message).newInstance()).setVisible(true);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(MyMenuItem.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (InstantiationException ex) {
+                Logger.getLogger(MyMenuItem.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IllegalAccessException ex) {
+                Logger.getLogger(MyMenuItem.class.getName()).log(Level.SEVERE, null, ex);
+            }
 	}
     }
     
