@@ -41,7 +41,7 @@ public class ProductoDAO implements IProducto{
             ps.setDouble(8, producto.getAncho());
             ps.setDouble(9, producto.getDiametro());
             ps.setDouble(10, producto.getPrecio());
-            ps.setBinaryStream(11, producto.getFoto());
+            ps.setBytes(11, producto.getFoto());
             ps.setString(12, producto.getSubcategoria().getCodigo());
          
             esValido = ps.executeUpdate() > 0 ;
@@ -56,7 +56,7 @@ public class ProductoDAO implements IProducto{
     @Override
     public boolean Actualizar(Producto producto) {
         boolean esValido= false;
-        String query="UPDATE  TProducto NOMBRE=?,"
+        String query="UPDATE  TProducto SET NOMBRE=?,"
                                       + "DESCRIPCION=?,"
                                       + "ESPECIFICACION=?,"
                                       + "PESO=?,"
@@ -67,7 +67,7 @@ public class ProductoDAO implements IProducto{
                                       + "PRECIO=?,"
                                       + "FOTO=?,"
                                       + "COD_SUB_CATEGORIA=? "
-                                      + "WHERE COD_PRODUCTO = ?)";
+                                      + "WHERE COD_PRODUCTO = ?";
         try {
             PreparedStatement ps = cn.prepareStatement(query);
             ps.setString(1, producto.getNombre());
@@ -79,7 +79,7 @@ public class ProductoDAO implements IProducto{
             ps.setDouble(7, producto.getAncho());
             ps.setDouble(8, producto.getDiametro());
             ps.setDouble(9, producto.getPrecio());
-            ps.setBinaryStream(11, producto.getFoto(),producto.getFotoLenght());
+            ps.setBytes(10, producto.getFoto());
             ps.setString(11, producto.getSubcategoria().getCodigo());
             ps.setString(12, producto.getCodigo());
          
@@ -95,7 +95,7 @@ public class ProductoDAO implements IProducto{
     @Override
     public boolean Eliminar(String codigo) {
           boolean esValido= false;
-        String query="DELETE FROM  TProducto WHERE COD_PRODUCTO = ?)";
+        String query="DELETE FROM  TProducto WHERE COD_PRODUCTO = ?";
         try {
             PreparedStatement ps = cn.prepareStatement(query);
             ps.setString(1 , codigo);
@@ -131,6 +131,7 @@ public class ProductoDAO implements IProducto{
                 producto.setAncho(rs.getDouble(8));
                 producto.setDiametro(rs.getDouble(9));
                 producto.setPrecio(rs.getDouble(10));
+                producto.setFoto(rs.getBytes(11));
                 producto.setSubcategoria(subCategoriaDao.Buscar(rs.getString(12)));
                 
                 lista.add(producto);
@@ -164,17 +165,7 @@ public class ProductoDAO implements IProducto{
                 producto.setAncho(rs.getDouble(8));
                 producto.setDiametro(rs.getDouble(9));
                 producto.setPrecio(rs.getDouble(10));
-               
-                Blob blob = rs.getBlob(11);
-                byte[] data = blob.getBytes(1, (int)blob.length());
-                BufferedImage img = null;
-                try {
-                img = ImageIO.read(new ByteArrayInputStream(data));
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-                
-                producto.setFoto(img);
+                producto.setFoto(rs.getBytes(11));
                 producto.setSubcategoria(subCategoriaDao.Buscar(rs.getString(12)));
                
             }
@@ -208,6 +199,7 @@ public class ProductoDAO implements IProducto{
                 producto.setAncho(rs.getDouble(8));
                 producto.setDiametro(rs.getDouble(9));
                 producto.setPrecio(rs.getDouble(10));
+                producto.setFoto(rs.getBytes(11));
                 producto.setSubcategoria(subCategoriaDao.Buscar(rs.getString(12)));
                 
                 lista.add(producto);

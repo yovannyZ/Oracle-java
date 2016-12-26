@@ -7,11 +7,28 @@ package formularios;
 
 import dao.ProductoDAO;
 import dao.SubCategoriaDAO;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+import java.awt.image.MemoryImageSource;
+import java.awt.image.PixelGrabber;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.sql.Blob;
+import java.util.Iterator;
 import java.util.List;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReadParam;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -31,6 +48,7 @@ public class FrmProducto extends javax.swing.JFrame {
     Producto producto;
     FileInputStream imagen = null;
     File fichero;
+    Image image;
     
     /**
      * Creates new form FrmProducto
@@ -385,20 +403,20 @@ public class FrmProducto extends javax.swing.JFrame {
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         this.tpPanel.setSelectedIndex(1);
-        //Limpiar();
+        Limpiar();
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-       // Eliminar();
+       Eliminar();
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void txtBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscarActionPerformed
-       // Buscar(this.txtBuscar.getText());
+        Buscar(this.txtBuscar.getText());
     }//GEN-LAST:event_txtBuscarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-       // Limpiar();
-       // this.tpPanel.setSelectedIndex(0);
+        Limpiar();
+        this.tpPanel.setSelectedIndex(0);
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImagenActionPerformed
@@ -417,11 +435,8 @@ public class FrmProducto extends javax.swing.JFrame {
                 fichero = ventana.jFileChooser1.getSelectedFile();
                 
                 try{
-                    imagen = new FileInputStream(fichero);
-                    ImageIcon icon = new ImageIcon(fichero.toString());
-                    Icon icono = new ImageIcon(icon.getImage().getScaledInstance(lblImagen.getWidth(), lblImagen.getHeight(), Image.SCALE_DEFAULT));
-                    lblImagen.setText(null);
-                    lblImagen.setIcon( icono );
+                    image = ImageIO.read(fichero);
+                    PintarImagen(image);
                 }catch(Exception ex){
                     JOptionPane.showMessageDialog(null, "Error abriendo la imagen "+ ex);
                 }
@@ -430,11 +445,7 @@ public class FrmProducto extends javax.swing.JFrame {
     }//GEN-LAST:event_btnImagenActionPerformed
 
     private void btnAgregar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar1ActionPerformed
-         if(this.txtCodigo.isEnabled()){
-            Agregar();
-        }else{
-            Actualizar();
-        }
+        Agregar();  
     }//GEN-LAST:event_btnAgregar1ActionPerformed
 
     /**
@@ -592,26 +603,46 @@ public class FrmProducto extends javax.swing.JFrame {
             double diametro = Double.parseDouble(this.txtDiametro.getText());
             double precio = Double.parseDouble(this.txtPrecio.getText());
             
-            SubCategoria subCategoria = (SubCategoria)cboSubCategoria.getSelectedItem();
+           SubCategoria subCategoria = (SubCategoria)cboSubCategoria.getSelectedItem();
+           this.producto = new Producto(codigo, nombre, descripcion, especificacion, peso, longitud, alto, ancho, diametro, precio,ImageByte(image), subCategoria);
 
-            this.producto = new Producto(codigo, nombre, descripcion, especificacion, peso, longitud, alto, ancho, diametro, precio, imagen,(int)fichero.length(), subCategoria);
-
-            rpt = productoDao.Agregar(this.producto);
-
-            if(rpt){
-                JOptionPane.showMessageDialog(null, "Sub Categoria agregada correctamente");
+           if(this.txtCodigo.isEnabled()){
+                rpt = productoDao.Agregar(this.producto);
             }else{
-                JOptionPane.showMessageDialog(null, "No se agrego la categoría");
+                rpt = productoDao.Actualizar(this.producto);
+            }
+            
+            if(rpt){
+                JOptionPane.showMessageDialog(null, "Sub Categoria grabada correctamente");
+            }else{
+                JOptionPane.showMessageDialog(null, "No se grabo la categoría");
             }
 
             Limpiar();
             Listar("TODO");
     }
      
-     private void Actualizar(){
-         Agregar();
+     private void Eliminar(){
+         boolean rpt= false;
+    
+        String codigo = ObtenerCodigo();
+
+         if(codigo == null)
+            return;
+
+        if(JOptionPane.showConfirmDialog(this, "¿Estas seguro de Eliminar?") == 0){
+            rpt = productoDao.Eliminar(codigo);
+            if(rpt){
+                JOptionPane.showMessageDialog(this, "Categoria Eliminado");
+            }else{
+                JOptionPane.showMessageDialog(this, "No se pudo eliminar la categoria");
+            }
+        }
+
+        Listar("TODO");
+
      }
-     
+      
      private void PasarDatos(){
 
         String codigo= ObtenerCodigo();
@@ -620,7 +651,7 @@ public class FrmProducto extends javax.swing.JFrame {
             return;
 
         this.producto = this.productoDao.Buscar(codigo);
-
+        this.txtCodigo.setEnabled(false);
         this.txtCodigo.setText(this.producto.getCodigo());
         this.txtNombre.setText(this.producto.getNombre());
         this.txtDescripcion.setText(this.producto.getDescripcion());
@@ -631,12 +662,8 @@ public class FrmProducto extends javax.swing.JFrame {
         this.txtLongitud.setText(""+this.producto.getLongitud());
         this.txtPeso.setText(""+this.producto.getPeso());
         this.txtPrecio.setText(""+this.producto.getPrecio());
-        this.imagen = this.producto.getFoto();
-        ImageIcon icon = new ImageIcon(fichero.toString());
-        Icon icono = new ImageIcon(icon.getImage().getScaledInstance(lblImagen.getWidth(), lblImagen.getHeight(), Image.SCALE_DEFAULT));
-        lblImagen.setText(null);
-        lblImagen.setIcon( icono );
-     
+        image = ByteImage(this.producto.getFoto());
+        PintarImagen(image);
         for (int i=0;i < cboSubCategoria.getItemCount() ;i++) {
             SubCategoria subCategoria1= cboSubCategoria.getItemAt(i);
      
@@ -658,6 +685,66 @@ public class FrmProducto extends javax.swing.JFrame {
         String codigo=String.valueOf(modelo.getValueAt(tbListado.getSelectedRow(),0));
 
         return codigo;
-    }   
+    }  
+     
+     private byte[] ImageByte(Image image){
+         
+        int width = image.getWidth(null);
+        int height = image.getHeight(null);
+         ByteArrayOutputStream byteStream = new ByteArrayOutputStream(); 
+        try {
+          int[] imageSource = new int[width * height];
+          PixelGrabber pg = new PixelGrabber(image, 0, 0, width, height, imageSource, 0, width);
+          pg.grabPixels();
+
+          
+          GZIPOutputStream zippedStream = new GZIPOutputStream(byteStream);
+          ObjectOutputStream objectStream = new ObjectOutputStream(zippedStream);
+          objectStream.writeShort(width);
+          objectStream.writeShort(height);
+          objectStream.writeObject(imageSource);
+          objectStream.flush();
+          objectStream.close();
+          
+        }
+        catch (Exception e) {
+          JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+        
+        return byteStream.toByteArray();
+     }
+     
+     private Image ByteImage(byte[] bytes){
+       try {
+            // unzip data
+            ByteArrayInputStream byteStream = new ByteArrayInputStream(bytes);
+            GZIPInputStream zippedStream = new GZIPInputStream(byteStream);
+            ObjectInputStream objectStream = new ObjectInputStream(zippedStream);
+            int width = objectStream.readShort();
+            int height = objectStream.readShort();
+            int[] imageSource = (int[])objectStream.readObject();
+            objectStream.close();
+
+            // create image
+            MemoryImageSource mis = new MemoryImageSource(width, height, imageSource, 0, width);
+            return Toolkit.getDefaultToolkit().createImage(mis);    
+          }
+          catch (Exception e) {
+            return null;
+          }
+       
+     }
+     
+     private void PintarImagen(Image image){
+        
+             ImageIcon icon = new ImageIcon(image);
+             Icon icono = new ImageIcon(icon.getImage().getScaledInstance(lblImagen.getWidth(), lblImagen.getHeight(), Image.SCALE_DEFAULT));
+             lblImagen.setText(null);
+             lblImagen.setIcon( icono );
+     }
+     
+     private void Buscar(String codigo){ 
+        Listar(codigo);
+    }
 
 }

@@ -23,7 +23,7 @@ public class Producto {
     private double ancho;
     private double diametro;
     private double precio;
-    private Image foto;
+    private byte[] foto;
     private int fotoLenght;
     private SubCategoria subcategoria;
 
@@ -107,11 +107,11 @@ public class Producto {
         this.precio = precio;
     }
 
-    public Image getFoto() {
+    public byte[] getFoto() {
         return foto;
     }
 
-    public void setFoto(Image foto) {
+    public void setFoto(byte[] foto) {
         this.foto = foto;
     }
 
@@ -135,7 +135,7 @@ public class Producto {
     public Producto() {
     }
 
-    public Producto(String codigo, String nombre, String descripcion, String especificacion, double peso, double longitud, double alto, double ancho, double diametro, double precio, Image foto, int fotoLenght, SubCategoria subcategoria) {
+    public Producto(String codigo, String nombre, String descripcion, String especificacion, double peso, double longitud, double alto, double ancho, double diametro, double precio, byte[] foto, SubCategoria subcategoria) {
         this.codigo = codigo;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -147,7 +147,7 @@ public class Producto {
         this.diametro = diametro;
         this.precio = precio;
         this.foto = foto;
-        this.fotoLenght = fotoLenght;
+       
         this.subcategoria = subcategoria;
     }
 
