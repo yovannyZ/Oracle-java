@@ -5,17 +5,29 @@
  */
 package formularios;
 
+import dao.MenuDAO;
+import java.util.List;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import modelo.Menu;
+import util.MyMenuItem;
+
 /**
  *
  * @author yzeballos
  */
 public class FrmMenu extends javax.swing.JFrame {
 
+    JMenu menu;
+    private static final long serialVersionUID = 4436990274867781357L;
     /**
      * Creates new form FrmMenu
      */
     public FrmMenu() {
         initComponents();
+        CargarMenus();
+       
     }
 
     /**
@@ -27,17 +39,20 @@ public class FrmMenu extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jMenuBar2 = new javax.swing.JMenuBar();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setJMenuBar(jMenuBar2);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGap(0, 927, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGap(0, 529, Short.MAX_VALUE)
         );
 
         pack();
@@ -79,5 +94,37 @@ public class FrmMenu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuBar jMenuBar2;
     // End of variables declaration//GEN-END:variables
+
+    private void CargarMenus(){
+        MenuDAO menuDao= new MenuDAO();
+        List<Menu> listaMenus = menuDao.ListarMenus(2);//Perfil del usuario
+        for (int i = 0; i < listaMenus.size(); i++) {
+            
+            if(listaMenus.size() > 0){
+                
+                if(listaMenus.get(i).getIdMenuPadre() == 0){
+                 menu = new JMenu(listaMenus.get(i).getDescripcion());
+                 menu.setName(""+listaMenus.get(i).getIdMenu());
+                 }
+                 for (int j = 0; j < listaMenus.size(); j++) {
+                     
+                     if(listaMenus.get(i).getIdMenu() == listaMenus.get(j).getIdMenuPadre()){
+                         JMenuItem menuItem = new JMenuItem(listaMenus.get(j).getDescripcion());
+                         menu.add(menuItem);
+                     }   
+                }  
+            }
+            jMenuBar2.add(menu); 
+        }
+    }
+    
+    /*private void addMenuItems(JMenu menu, String[] args[]) {
+		for (int i = 0; i < args.length; i++) {
+			MyMenuItem m = new MyMenuItem(args[i][0], args[i][1]);
+			menu.add(m);
+			m.addActionListener(m);
+		}
+	}*/
 }
