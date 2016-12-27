@@ -166,6 +166,30 @@ public class UsuarioDAO implements IUsuario{
         return lista;
     }
     
+     public Usuario BuscarUsername(String username) throws Exception {
+        
+        Usuario usuario = null;
+        PerfilDAO perfilDao= new PerfilDAO();
+
+        String query="SELECT * FROM tbl_usuarios where estado = 1 and IdentificadorUsuario='"+username+"'";
+        Statement st = cn.createStatement();
+        ResultSet rs =st.executeQuery(query);
+        while(rs.next()){
+            usuario =  new Usuario();
+            usuario.setId(rs.getInt(1));
+            usuario.setPerfil(perfilDao.Buscar(rs.getInt(2)));
+            usuario.setUserName(rs.getString(3));
+            usuario.setContrasena(rs.getString(4));
+            usuario.setSalt(rs.getString(5));
+            hs = new HashSalt(rs.getString(4), rs.getString(5));
+            usuario.setNombre(rs.getString(6));
+            usuario.setEstado(rs.getBoolean(7));
+        }
+
+        return usuario;
+    }
+    
+    
     /*
     Ejemplo de comousar hash
      HashSalt hs = PasswordUtil.getHash("miPassword");

@@ -8,8 +8,6 @@ package formularios;
 import dao.MenuDAO;
 import java.util.List;
 import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import modelo.Menu;
 import util.MyMenuItem;
 
@@ -20,13 +18,15 @@ import util.MyMenuItem;
 public class FrmMenu extends javax.swing.JFrame {
 
     JMenu menu;
+    public  int perfil;
+
+    
     private static final long serialVersionUID = 4436990274867781357L;
     /**
      * Creates new form FrmMenu
      */
     public FrmMenu() {
         initComponents();
-        CargarMenus();
         this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
         this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
        
@@ -60,7 +60,7 @@ public class FrmMenu extends javax.swing.JFrame {
         );
         escritorioLayout.setVerticalGroup(
             escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 213, Short.MAX_VALUE)
+            .addGap(0, 112, Short.MAX_VALUE)
         );
 
         setJMenuBar(jMenuBar2);
@@ -119,9 +119,9 @@ public class FrmMenu extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar2;
     // End of variables declaration//GEN-END:variables
 
-    private void CargarMenus(){
+    public void CargarMenus(){
         MenuDAO menuDao= new MenuDAO();
-        List<Menu> listaMenus = menuDao.ListarMenus(1);//Perfil del usuario
+        List<Menu> listaMenus = menuDao.ListarMenus(perfil);//Perfil del usuario
         for (int i = 0; i < listaMenus.size(); i++) {
             
             if(listaMenus.size() > 0){
@@ -133,14 +133,11 @@ public class FrmMenu extends javax.swing.JFrame {
                  for (int j = 0; j < listaMenus.size(); j++) {
                      
                      if(listaMenus.get(i).getIdMenu() == listaMenus.get(j).getIdMenuPadre()){
-                         
-                         
-                             
                          addMenuItems(menu,listaMenus.get(j).getDescripcion(),listaMenus.get(j).getUrlMenu(),listaMenus.get(j).isHabilitado());
                      }   
                 }  
             }
-            jMenuBar2.add(menu); 
+            jMenuBar2.add(menu); ///Agrego Menus
         }
     }
     
@@ -148,8 +145,10 @@ public class FrmMenu extends javax.swing.JFrame {
 		
             MyMenuItem m = new MyMenuItem(texto, frm,this);
             m.setEnabled(habilitado);
-            menu.add(m);
+            menu.add(m);  //Agrego MenuItems
             m.addActionListener(m);
 
 	}
+    
+   
 }
