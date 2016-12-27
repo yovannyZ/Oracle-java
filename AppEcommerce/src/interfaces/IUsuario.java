@@ -16,7 +16,7 @@ public interface IUsuario {
     
     boolean Agregar(Usuario usuario) throws Exception;
     
-    boolean Actualizar(Usuario usuario) throws Exception;
+    boolean Actualizar(Usuario usuario,boolean editarContrasena) throws Exception;
     
     boolean Eliminar(int codigo) throws Exception;
     

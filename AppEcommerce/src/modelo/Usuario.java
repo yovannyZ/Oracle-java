@@ -17,6 +17,7 @@ public class Usuario {
     private String Nombre;
     private boolean Estado;
     private Perfil perfil;
+    private String Salt;
 
     public int getId() {
         return id;
@@ -66,6 +67,15 @@ public class Usuario {
         this.perfil = perfil;
     }
 
+    public String getSalt() {
+        return Salt;
+    }
+
+    public void setSalt(String Salt) {
+        this.Salt = Salt;
+    }
+    
+    
     public Usuario() {
     }
 

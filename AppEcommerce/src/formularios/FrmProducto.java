@@ -100,7 +100,9 @@ public class FrmProducto extends javax.swing.JInternalFrame {
         lblImagen = new javax.swing.JLabel();
         btnAgregar1 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setClosable(true);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setIconifiable(true);
 
         jPanel3.setBackground(new java.awt.Color(102, 102, 102));
 

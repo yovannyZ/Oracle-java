@@ -5,31 +5,31 @@
  */
 package formularios;
 
-import dao.CategoriaDAO;
-import dao.SubCategoriaDAO;
+import dao.PerfilDAO;
+import dao.UsuarioDAO;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import modelo.Categoria;
-import modelo.SubCategoria;
+import modelo.HashSalt;
+import modelo.Perfil;
+import modelo.Usuario;
 
 /**
  *
  * @author yzeballos
  */
-public class FrmSubCategoria extends javax.swing.JInternalFrame {
+public class FrmUsuario extends javax.swing.JInternalFrame {
 
-    SubCategoria subCategoria;
-    SubCategoriaDAO subCategoriaDao= new SubCategoriaDAO();
-    CategoriaDAO categoriaDao= new CategoriaDAO();
-    
+    UsuarioDAO usuarioDao = new UsuarioDAO();
+    Usuario usuario;
     /**
-     * Creates new form FrmSubCategoria
+     * Creates new form FrmUsuario
      */
-    public FrmSubCategoria() {
+    public FrmUsuario() {
         initComponents();
         LlenarCombo();
-        Listar("TODO");
+        Listar(0);
     }
 
     /**
@@ -54,32 +54,36 @@ public class FrmSubCategoria extends javax.swing.JInternalFrame {
         jLabel4 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         btnCancelar = new javax.swing.JButton();
-        txtCodigo = new javax.swing.JTextField();
-        txtDescripcion = new javax.swing.JTextField();
+        txtId = new javax.swing.JTextField();
+        txtUsuario = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         btnAgregar = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
-        cboCategoria = new javax.swing.JComboBox<>();
+        cboPerfil = new javax.swing.JComboBox<>();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        txtContrasena = new javax.swing.JPasswordField();
+        txtNombrePerfil = new javax.swing.JTextField();
+        chkCambiarContraseña = new javax.swing.JCheckBox();
 
         setClosable(true);
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setIconifiable(true);
 
         jPanel3.setBackground(new java.awt.Color(102, 102, 102));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Sub Categorías");
+        jLabel3.setText("Usuarios");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(192, 192, 192)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel3)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(210, 210, 210))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -100,6 +104,8 @@ public class FrmSubCategoria extends javax.swing.JInternalFrame {
                 "Codigo", "Nombre", "Categoria"
             }
         ));
+        tbListado.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        tbListado.setMinimumSize(new java.awt.Dimension(10, 0));
         jScrollPane1.setViewportView(tbListado);
 
         btnModificar.setText("Modificar");
@@ -164,7 +170,7 @@ public class FrmSubCategoria extends javax.swing.JInternalFrame {
                             .addComponent(jLabel4)))))
         );
 
-        tpPanel.addTab("Listado de Sub Categorías", jPanel1);
+        tpPanel.addTab("Listado", jPanel1);
 
         btnCancelar.setText("Cancelar");
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
@@ -173,9 +179,11 @@ public class FrmSubCategoria extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel1.setText("Codigo:");
+        txtId.setEnabled(false);
 
-        jLabel2.setText("Descripción:");
+        jLabel1.setText("Id:");
+
+        jLabel2.setText("Usuario:");
 
         btnAgregar.setText("Grabar");
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
@@ -184,47 +192,86 @@ public class FrmSubCategoria extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel5.setText("Categoría:");
+        jLabel5.setText("Perfil");
+
+        jLabel6.setText("Contraseña:");
+
+        jLabel7.setText("Nombre de usuario:");
+
+        chkCambiarContraseña.setText("Cambiar Contraseña");
+        chkCambiarContraseña.setEnabled(false);
+        chkCambiarContraseña.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                chkCambiarContraseñaStateChanged(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(119, 144, Short.MAX_VALUE)
+                .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31)
+                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(170, 170, 170))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(127, Short.MAX_VALUE)
+                .addGap(28, 28, 28)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel6)
                     .addComponent(jLabel2)
-                    .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
-                .addGap(44, 44, 44)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtDescripcion, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                    .addComponent(cboCategoria, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(101, 101, 101))
+                    .addComponent(jLabel1))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(cboPerfil, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtNombrePerfil))
+                        .addGap(144, 144, 144))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(txtContrasena, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
+                                    .addComponent(txtUsuario, javax.swing.GroupLayout.Alignment.LEADING))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(chkCambiarContraseña)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(64, 64, 64)
+                .addGap(38, 38, 38)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel6)
+                        .addComponent(txtContrasena, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(chkCambiarContraseña, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(cboCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(25, 25, 25)
+                    .addComponent(txtNombrePerfil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cboPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(55, Short.MAX_VALUE))
+                .addGap(24, 24, 24))
         );
 
         tpPanel.addTab("Mantenimiento", jPanel2);
@@ -236,7 +283,7 @@ public class FrmSubCategoria extends javax.swing.JInternalFrame {
             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(tpPanel)
+                .addComponent(tpPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 507, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -244,44 +291,53 @@ public class FrmSubCategoria extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(tpPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(tpPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
-       PasarDatos();
+        PasarDatos();
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         this.tpPanel.setSelectedIndex(1);
         Limpiar();
+        this.txtContrasena.setEnabled(true);
+        this.chkCambiarContraseña.setSelected(true);
+        this.chkCambiarContraseña.setEnabled(false);
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        Eliminar();       
+        Eliminar();
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void txtBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscarActionPerformed
-        Buscar(this.txtBuscar.getText());
+        if(this.txtBuscar.getText().equals(""))
+            Listar(0);
+        else    
+           Buscar(Integer.parseInt(this.txtBuscar.getText()));
     }//GEN-LAST:event_txtBuscarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-      Limpiar();
-      this.tpPanel.setSelectedIndex(0);
+        Limpiar();
+        this.tpPanel.setSelectedIndex(0);
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-         if(this.txtCodigo.isEnabled()){
+        if(this.txtId.getText().equals("")){
             Agregar();
         }else{
             Actualizar();
         }
-
     }//GEN-LAST:event_btnAgregarActionPerformed
 
-   
+    private void chkCambiarContraseñaStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkCambiarContraseñaStateChanged
+        this.txtContrasena.setEnabled(this.chkCambiarContraseña.isSelected());
+    }//GEN-LAST:event_chkCambiarContraseñaStateChanged
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
@@ -289,12 +345,15 @@ public class FrmSubCategoria extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnNuevo;
-    private javax.swing.JComboBox<Categoria> cboCategoria;
+    private javax.swing.JComboBox<Perfil> cboPerfil;
+    private javax.swing.JCheckBox chkCambiarContraseña;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -302,27 +361,38 @@ public class FrmSubCategoria extends javax.swing.JInternalFrame {
     private javax.swing.JTable tbListado;
     private javax.swing.JTabbedPane tpPanel;
     private javax.swing.JTextField txtBuscar;
-    private javax.swing.JTextField txtCodigo;
-    private javax.swing.JTextField txtDescripcion;
+    private javax.swing.JPasswordField txtContrasena;
+    private javax.swing.JTextField txtId;
+    private javax.swing.JTextField txtNombrePerfil;
+    private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
 
 
     private void Limpiar(){
-    this.txtCodigo.setText("");
-    this.txtDescripcion.setText("");
-    this.cboCategoria.setSelectedIndex(0);
-    this.txtCodigo.setEnabled(true); 
-}
-
+        this.txtBuscar.setText("");
+        this.txtContrasena.setText("");
+        this.cboPerfil.setSelectedIndex(0);
+        this.txtId.setText("");
+        this.txtNombrePerfil.setText("");
+        this.txtUsuario.setText("");
+        this.txtContrasena.setEnabled(true);
+    }
+    
     private void LlenarCombo(){
-        CategoriaDAO cateDao= new CategoriaDAO();
-        List<Categoria> listaCategoria = cateDao.Listar();
-        for (Categoria categoria : listaCategoria) {
-            cboCategoria.addItem(categoria);
-    }  
-}
-   
-    private void Listar(String codigo){ // si codigo= "TODO" : listar todo , sino buscar las concidencias
+        PerfilDAO perfilDao= new PerfilDAO();
+        List<Perfil> listaPerfil = new ArrayList<>();
+        try {
+             listaPerfil = perfilDao.Listar();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+       
+        for (Perfil perfil : listaPerfil) {
+            cboPerfil.addItem(perfil);
+        }  
+    }
+    
+    private void Listar(int codigo){ // si codigo= 0 : listar todo , sino buscar las concidencias
 
          this.tpPanel.setSelectedIndex(0);
          tbListado.setModel(new javax.swing.table.DefaultTableModel(
@@ -330,129 +400,166 @@ public class FrmSubCategoria extends javax.swing.JInternalFrame {
 
                 },
                 new String [] {
-                    "Codigo", "Descripcion","Catgoria"
+                    "ID", "Usuario","Perfil","Nombre"
                 }
             ));
 
         DefaultTableModel modelo = (DefaultTableModel)this.tbListado.getModel();
 
-        List<SubCategoria> lista;
+        List<Usuario> lista = new ArrayList<>();
 
-        if(codigo == "TODO")
-           lista = subCategoriaDao.Listar();
-        else
-           lista = subCategoriaDao.Listar(codigo);
-
-
+        try {
+            if(codigo == 0)
+                lista = usuarioDao.Listar();
+             else
+                lista = usuarioDao.Listar(codigo);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+        
         Object[] fila = new Object[modelo.getColumnCount()];
 
         for(int i = 0; i <lista.size(); i++){
-            fila[0] = lista.get(i).getCodigo();
-            fila[1] = lista.get(i).getNombre();
-            fila[2] = lista.get(i).getCategoria().getDescripcion();
+            fila[0] = lista.get(i).getId();
+            fila[1] = lista.get(i).getUserName();
+            fila[2] = lista.get(i).getPerfil().getNombrePerfil();
+            fila[3] = lista.get(i).getNombre();
             modelo.addRow(fila);
         }
+        
+        tbListado.getColumnModel().getColumn(0).setPreferredWidth(40);
+        tbListado.getColumnModel().getColumn(1).setPreferredWidth(100);
+        tbListado.getColumnModel().getColumn(2).setPreferredWidth(200);
+        tbListado.getColumnModel().getColumn(3).setPreferredWidth(200);
     }
-
+    
     private void Agregar(){
+        
         boolean rpt = false;
-            String codigo = this.txtCodigo.getText();
-            String descripcion = this.txtDescripcion.getText();
-            Categoria categoria = (Categoria)cboCategoria.getSelectedItem();
-
-            subCategoria = new SubCategoria(codigo, descripcion,categoria);
-
-            rpt = subCategoriaDao.Agregar(subCategoria);
-
-            if(rpt){
-                JOptionPane.showMessageDialog(null, "Sub Categoria agregada correctamente");
-            }else{
-                JOptionPane.showMessageDialog(null, "No se agrego la categoría");
-            }
-
-            Limpiar();
-            Listar("TODO");
+        String username = this.txtUsuario.getText();
+        String nombre = this.txtNombrePerfil.getText();
+        Perfil perfil = (Perfil)cboPerfil.getSelectedItem();
+        this.usuario = new Usuario(0,username, ObtenerContrasena(), nombre, perfil);
+        
+        try {
+            rpt = usuarioDao.Agregar(usuario);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+        
+        if(rpt)
+            JOptionPane.showMessageDialog(null, "Usuario agregado correctamente");
+        else
+            JOptionPane.showMessageDialog(null, "No se agrego el usuario");
+        
+        Limpiar();
+        Listar(0);
     }
+    
+    private void Actualizar(){
+        
+        boolean rpt = false;
+        this.txtContrasena.setEnabled(true);
+        int codigo = this.txtId.getText().equals("") ? 0 : Integer.parseInt(this.txtId.getText());
+        String username = this.txtUsuario.getText();
+        String nombre = this.txtNombrePerfil.getText();
+        Perfil perfil = (Perfil)cboPerfil.getSelectedItem();
+        this.usuario = new Usuario(codigo,username, ObtenerContrasena(), nombre, perfil);
+        
+        try {
+            rpt = usuarioDao.Actualizar(usuario,this.chkCambiarContraseña.isSelected());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+        
+        if(rpt)
+            JOptionPane.showMessageDialog(null, "Usuario se grabo correctamente");
+        else
+            JOptionPane.showMessageDialog(null, "No se grabo el usuario");
+        
+       Limpiar();
+       Listar(0);
+    }
+    
+     private void Eliminar(){
+        boolean rpt= false;
 
-    private void PasarDatos(){
+        int codigo = ObtenerCodigo();
 
-        String codigo= ObtenerCodigo();
-
-        if(codigo == null)
+         if(codigo == 0)
             return;
 
-        subCategoria = subCategoriaDao.Buscar(codigo);
+        if(JOptionPane.showConfirmDialog(this, "¿Estas seguro de Eliminar?") == 0){
+            
+            try {
+                 rpt = usuarioDao.Eliminar(codigo);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, e.getMessage());
+            }
+           
+            if(rpt)
+                JOptionPane.showMessageDialog(this, "Usuario Eliminado");
+            else
+                JOptionPane.showMessageDialog(this, "No se pudo eliminar el Usuario");
+        }
 
-        this.txtCodigo.setEnabled(false);
-        this.txtCodigo.setText(subCategoria.getCodigo());
-        this.txtDescripcion.setText(subCategoria.getNombre());
-     
-        for (int i=0;i < cboCategoria.getItemCount() ;i++) {
-            Categoria categoria1= cboCategoria.getItemAt(i);
-     
-            if(categoria1.getCodigo().equalsIgnoreCase(subCategoria.getCategoria().getCodigo())){
-                this.cboCategoria.setSelectedIndex(i);
+        Listar(0);
+    }
+    
+    private void PasarDatos(){
+        this.chkCambiarContraseña.setEnabled(true);
+        int codigo= ObtenerCodigo();
+
+        if(codigo == 0)
+            return;
+
+        try {
+           usuario = usuarioDao.Buscar(codigo); 
+        } catch (Exception e) {
+           JOptionPane.showMessageDialog(this, e.getMessage());
+           return;
+        }
+        
+        this.txtId.setText(""+usuario.getId());
+        this.txtNombrePerfil.setText(usuario.getNombre());
+        this.txtUsuario.setText(usuario.getUserName());
+        this.txtContrasena.setText(usuario.getContrasena());
+       
+        for (int i=0;i < this.cboPerfil.getItemCount() ;i++) {
+         
+            if(cboPerfil.getItemAt(i).getId() == usuario.getPerfil().getId()){
+                this.cboPerfil.setSelectedIndex(i);
             }
         }
         
         this.tpPanel.setSelectedIndex(1);
     }
-
-    private void Actualizar(){
-        
-         boolean rpt = false;
-            String codigo = this.txtCodigo.getText();
-            String descripcion = this.txtDescripcion.getText();
-            Categoria categoria = (Categoria)cboCategoria.getSelectedItem();
-
-            subCategoria = new SubCategoria(codigo, descripcion,categoria);
-
-            rpt = subCategoriaDao.Actualizar(subCategoria);
-
-            if(rpt){
-                JOptionPane.showMessageDialog(null, "Sub Categoria actualizada correctamente");
-            }else{
-                JOptionPane.showMessageDialog(null, "No se actualizo la sub categoría");
-            }
-
-            Limpiar();
-            Listar("TODO");
-    }
-
-    private String ObtenerCodigo(){
+    
+    private int ObtenerCodigo(){
         if(this.tbListado.getSelectedRow() == -1){
-            JOptionPane.showMessageDialog(this, "Seleccione una Sub categoria");
-            return null;
+            JOptionPane.showMessageDialog(this, "Seleccione un usuario");
+            return 0;
         }
 
         DefaultTableModel modelo = (DefaultTableModel)this.tbListado.getModel();
         String codigo=String.valueOf(modelo.getValueAt(tbListado.getSelectedRow(),0));
 
-        return codigo;
+        return Integer.parseInt(codigo);
     }
+    
+    private String ObtenerContrasena(){
+        StringBuilder contrasenaBuilder = new StringBuilder();
+        char[] arrayContrasena = this.txtContrasena.getPassword();
 
-    private void Eliminar(){
-        boolean rpt= false;
-
-        String codigo = ObtenerCodigo();
-
-         if(codigo == null)
-            return;
-
-        if(JOptionPane.showConfirmDialog(this, "¿Estas seguro de Eliminar?") == 0){
-            rpt = subCategoriaDao.Eliminar(codigo);
-            if(rpt){
-                JOptionPane.showMessageDialog(this, "Sub Categoria Eliminado");
-            }else{
-                JOptionPane.showMessageDialog(this, "No se pudo eliminar la sub categoria");
-            }
+        for (char c : arrayContrasena) {
+            contrasenaBuilder.append(c).toString();
         }
-
-        Listar("TODO");
+        String contrasena = contrasenaBuilder.toString();
+        return contrasena;
     }
-
-    private void Buscar(String codigo){ 
+    
+     private void Buscar(int codigo){ 
         Listar(codigo);
     }
-
+    
 }
