@@ -27,7 +27,8 @@ public class FrmMenu extends javax.swing.JFrame {
     public FrmMenu() {
         initComponents();
         CargarMenus();
-        
+        this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
+        this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
        
     }
 
@@ -40,20 +41,39 @@ public class FrmMenu extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        escritorio = new javax.swing.JDesktopPane();
         jMenuBar2 = new javax.swing.JMenuBar();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        escritorio.setBackground(new java.awt.Color(204, 204, 255));
+        escritorio.setDragMode(javax.swing.JDesktopPane.OUTLINE_DRAG_MODE);
+        escritorio.setFocusCycleRoot(false);
+        escritorio.setName("escritorio"); // NOI18N
+        escritorio.setOpaque(false);
+
+        javax.swing.GroupLayout escritorioLayout = new javax.swing.GroupLayout(escritorio);
+        escritorio.setLayout(escritorioLayout);
+        escritorioLayout.setHorizontalGroup(
+            escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 641, Short.MAX_VALUE)
+        );
+        escritorioLayout.setVerticalGroup(
+            escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 213, Short.MAX_VALUE)
+        );
+
         setJMenuBar(jMenuBar2);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 927, Short.MAX_VALUE)
+            .addComponent(escritorio)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 529, Short.MAX_VALUE)
+            .addComponent(escritorio)
         );
 
         pack();
@@ -95,6 +115,7 @@ public class FrmMenu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.JDesktopPane escritorio;
     private javax.swing.JMenuBar jMenuBar2;
     // End of variables declaration//GEN-END:variables
 
@@ -125,7 +146,7 @@ public class FrmMenu extends javax.swing.JFrame {
     
     private void addMenuItems(JMenu menu, String texto , String frm, boolean habilitado) {
 		
-            MyMenuItem m = new MyMenuItem(texto, frm);
+            MyMenuItem m = new MyMenuItem(texto, frm,this);
             m.setEnabled(habilitado);
             menu.add(m);
             m.addActionListener(m);

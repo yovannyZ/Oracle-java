@@ -14,7 +14,7 @@ import modelo.Perfil;
  */
 public interface IPerfil {
     
-     boolean Agregar(Perfil perfil) throws Exception;
+    boolean Agregar(Perfil perfil) throws Exception;
     
     boolean Actualizar(Perfil perfil) throws Exception;
     

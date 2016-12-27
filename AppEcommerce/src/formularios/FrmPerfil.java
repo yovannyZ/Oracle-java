@@ -60,6 +60,9 @@ public class FrmPerfil extends javax.swing.JInternalFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         txtDescripcion = new javax.swing.JTextArea();
 
+        setClosable(true);
+        setIconifiable(true);
+
         jPanel3.setBackground(new java.awt.Color(102, 102, 102));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
@@ -231,9 +234,7 @@ public class FrmPerfil extends javax.swing.JInternalFrame {
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel5)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -253,7 +254,7 @@ public class FrmPerfil extends javax.swing.JInternalFrame {
             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(tpPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 507, Short.MAX_VALUE)
+                .addComponent(tpPanel)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -369,7 +370,7 @@ private void Listar(int codigo){ // si codigo= 0 : listar todo , sino buscar las
 
 private void Agregar(){
     boolean rpt = false;
-    int id = Integer.parseInt(this.txtId.getText());
+    int id = "".equals(this.txtId.getText()) ? 0 : Integer.parseInt(this.txtId.getText());
     String nombrePerfil = this.txtNombre.getText();
     String descripcion = this.txtDescripcion.getText();
 

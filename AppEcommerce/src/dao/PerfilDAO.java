@@ -25,13 +25,13 @@ public class PerfilDAO implements IPerfil{
     @Override
     public boolean Agregar(Perfil perfil) throws Exception {
         boolean esValido= false;
-        String query="INSERT INTO tbl_perfiles VALUES(?,?,?,?)";
+        String query="INSERT INTO tbl_perfiles(NombrePerfil, DescripcionPerfil, Estado) VALUES(?,?,?)";
         
         PreparedStatement ps = cn.prepareStatement(query);
-        ps.setInt(1, perfil.getId());
-        ps.setString(2, perfil.getNombrePerfil());
-        ps.setString(3, perfil.getDescripcion());
-        ps.setBoolean(4, true);
+        
+        ps.setString(1, perfil.getNombrePerfil());
+        ps.setString(2, perfil.getDescripcion());
+        ps.setBoolean(3, true);
         esValido = ps.executeUpdate() > 0 ;
         
         return esValido;
@@ -75,7 +75,7 @@ public class PerfilDAO implements IPerfil{
         List<Perfil> lista = new ArrayList<>();
         Perfil perfil;
         
-        String query="SELECT * FROM tbl_perfiles";
+        String query="SELECT * FROM tbl_perfiles where estado = 1";
         Statement st = cn.createStatement();
         ResultSet rs =st.executeQuery(query);
         while(rs.next()){
@@ -94,7 +94,7 @@ public class PerfilDAO implements IPerfil{
       
         Perfil perfil = null;
         
-        String query="SELECT * FROM tbl_perfiles where id_perfil =" + codigo;
+        String query="SELECT * FROM tbl_perfiles where id_perfil =" + codigo+" and estado = 1" ;
         Statement st = cn.createStatement();
         ResultSet rs =st.executeQuery(query);
         while(rs.next()){
@@ -113,7 +113,7 @@ public class PerfilDAO implements IPerfil{
         List<Perfil> lista = new ArrayList<>();
         Perfil perfil;
         
-        String query="SELECT * FROM tbl_perfiles where id_perfil=" + codigo;
+        String query="SELECT * FROM tbl_perfiles where id_perfil=" + codigo +" and estado = 1";
         Statement st = cn.createStatement();
         ResultSet rs =st.executeQuery(query);
         while(rs.next()){
