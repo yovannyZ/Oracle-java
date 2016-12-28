@@ -6,6 +6,10 @@
 package formularios;
 
 import dao.UsuarioDAO;
+import java.awt.BorderLayout;
+import java.awt.Image;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import modelo.Usuario;
 import util.PasswordUtil;
@@ -18,11 +22,20 @@ public class FrmLogin extends javax.swing.JFrame {
 
     UsuarioDAO usuarioDao= new UsuarioDAO();
     
+    
     /**
      * Creates new form FrmLogin
      */
     public FrmLogin() {
         initComponents();
+        CargarImagen();
+        IconBoton(this.btnIngresar,"/img/comprobado.png");
+        IconBoton(this.btnCancelar,"/img/cancelar.png");
+        this.setLocationRelativeTo(null);
+        PanelLogin panel = new PanelLogin();
+        this.add(panel,BorderLayout.CENTER);
+        this.pack();
+        
     }
 
     /**
@@ -34,18 +47,25 @@ public class FrmLogin extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        txtUsuario = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        btnIngresar = new javax.swing.JButton();
-        btnCancelar = new javax.swing.JButton();
         txtContrasena = new javax.swing.JPasswordField();
+        txtUsuario = new javax.swing.JTextField();
+        btnCancelar = new javax.swing.JButton();
+        btnIngresar = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Inicio de sesión");
+        setPreferredSize(new java.awt.Dimension(420, 200));
+        setResizable(false);
 
-        jLabel1.setText("Usuario:");
-
-        jLabel2.setText("Contraseña:");
+        btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         btnIngresar.setText("Ingresar");
         btnIngresar.addActionListener(new java.awt.event.ActionListener() {
@@ -54,49 +74,53 @@ public class FrmLogin extends javax.swing.JFrame {
             }
         });
 
-        btnCancelar.setText("Cancelar");
+        jLabel2.setText("Contraseña:");
+
+        jLabel1.setText("Usuario:");
+
+        jLabel3.setToolTipText("");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtContrasena)
+                    .addComponent(txtUsuario)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(73, 73, 73)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
                             .addComponent(jLabel2)
-                            .addComponent(jLabel1))
-                        .addGap(37, 37, 37)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE)
-                            .addComponent(txtContrasena)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(104, 104, 104)
-                        .addComponent(btnIngresar)
-                        .addGap(47, 47, 47)
-                        .addComponent(btnCancelar)))
-                .addContainerGap(52, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnIngresar, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(66, 66, 66)
-                        .addComponent(jLabel1))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtContrasena, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(45, 45, 45)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnIngresar)
-                    .addComponent(btnCancelar))
-                .addContainerGap(131, Short.MAX_VALUE))
+                        .addComponent(jLabel1)
+                        .addGap(1, 1, 1)
+                        .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtContrasena, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnIngresar, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -105,6 +129,10 @@ public class FrmLogin extends javax.swing.JFrame {
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
         validar();
     }//GEN-LAST:event_btnIngresarActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+       System.exit(0);
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -134,10 +162,8 @@ public class FrmLogin extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new FrmLogin().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new FrmLogin().setVisible(true);
         });
     }
 
@@ -146,6 +172,7 @@ public class FrmLogin extends javax.swing.JFrame {
     private javax.swing.JButton btnIngresar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPasswordField txtContrasena;
     private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
@@ -161,8 +188,10 @@ public class FrmLogin extends javax.swing.JFrame {
                 if(PasswordUtil.ValidatePass(this.txtContrasena.getText(), usuario.getContrasena(), usuario.getSalt())){
                     FrmMenu menu = new FrmMenu();
                     menu.perfil = usuario.getPerfil().getId();
-                    menu.CargarMenus();
+                  //  menu.CargarMenus();
+                    this.setVisible(false);
                     menu.setVisible(true);
+                    
                 }else{
                     JOptionPane.showMessageDialog(this, "Contraseña incorrecta");
                 }
@@ -179,4 +208,23 @@ public class FrmLogin extends javax.swing.JFrame {
         return esValido;
     }
     
+    private void CargarImagen(){
+        ImageIcon fot = new ImageIcon(getClass().getResource("/img/login.png"));
+        Icon icono = new ImageIcon(fot.getImage().getScaledInstance(jLabel3.getWidth(), jLabel3.getHeight(), Image.SCALE_DEFAULT));
+        jLabel3.setIcon(icono);
+        this.repaint();
+    }
+    
+    private void IconBoton(javax.swing.JButton boton , String url){
+        
+        ImageIcon icono = new ImageIcon(getClass().getResource(url));
+        
+        boton.setIcon(icono);
+        boton.setIconTextGap(2);
+        boton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        boton.setVerticalAlignment(javax.swing.SwingConstants.CENTER);
+        boton.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        boton.setVerticalTextPosition(javax.swing.SwingConstants.CENTER);
+
+    }
 }

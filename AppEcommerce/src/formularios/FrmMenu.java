@@ -6,8 +6,12 @@
 package formularios;
 
 import dao.MenuDAO;
+import java.awt.Component;
 import java.util.List;
+import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import modelo.Menu;
 import util.MyMenuItem;
 
@@ -29,6 +33,7 @@ public class FrmMenu extends javax.swing.JFrame {
         initComponents();
         this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
         this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
+        IconMenuItem(FrmUsuario, "/img/comprobado.png");
        
     }
 
@@ -43,6 +48,10 @@ public class FrmMenu extends javax.swing.JFrame {
 
         escritorio = new javax.swing.JDesktopPane();
         jMenuBar2 = new javax.swing.JMenuBar();
+        mnTabla = new javax.swing.JMenu();
+        FrmUsuario = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        FrmProducto = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -63,6 +72,28 @@ public class FrmMenu extends javax.swing.JFrame {
             .addGap(0, 112, Short.MAX_VALUE)
         );
 
+        mnTabla.setText("Tablas");
+        mnTabla.setName("Tablas"); // NOI18N
+
+        FrmUsuario.setText("Usuarios");
+        FrmUsuario.setName("FrmUsuario"); // NOI18N
+        FrmUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                FrmUsuarioActionPerformed(evt);
+            }
+        });
+        mnTabla.add(FrmUsuario);
+
+        jMenu2.setText("Almacen");
+
+        FrmProducto.setText("Producto");
+        FrmProducto.setName("FrmProducto"); // NOI18N
+        jMenu2.add(FrmProducto);
+
+        mnTabla.add(jMenu2);
+
+        jMenuBar2.add(mnTabla);
+
         setJMenuBar(jMenuBar2);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -73,11 +104,15 @@ public class FrmMenu extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(escritorio)
+            .addComponent(escritorio, javax.swing.GroupLayout.Alignment.TRAILING)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void FrmUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FrmUsuarioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_FrmUsuarioActionPerformed
 
     /**
      * @param args the command line arguments
@@ -115,8 +150,12 @@ public class FrmMenu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem FrmProducto;
+    private javax.swing.JMenuItem FrmUsuario;
     public javax.swing.JDesktopPane escritorio;
+    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar2;
+    private javax.swing.JMenu mnTabla;
     // End of variables declaration//GEN-END:variables
 
     public void CargarMenus(){
@@ -149,6 +188,37 @@ public class FrmMenu extends javax.swing.JFrame {
             m.addActionListener(m);
 
 	}
+    
+    private void IconMenuItem(javax.swing.JMenuItem menuItem , String url){
+        
+        ImageIcon icono = new ImageIcon(getClass().getResource(url));
+        
+        menuItem.setIcon(icono);
+        menuItem.setIconTextGap(2);
+        menuItem.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        menuItem.setVerticalAlignment(javax.swing.SwingConstants.CENTER);
+        menuItem.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        menuItem.setVerticalTextPosition(javax.swing.SwingConstants.CENTER);
+
+    }
+    
+    private void enableFields(boolean option, JComponent jCompo) {
+        MenuDAO menuDao= new MenuDAO();
+        List<Menu> listaMenus = menuDao.ListarMenus(perfil);
+	Component [] arrayCompo = jCompo.getComponents();
+	for (Component component : arrayCompo) {
+		if(component instanceof JMenu){
+                    if((JMenu) component).getName() == )
+                    ((JMenu) component).setEnabled(option);
+                }
+		if(component instanceof JMenuItem){
+                    ((JMenuItem) component).setEnabled(option);
+                }
+		if(component instanceof JComponent)  {
+                    enableFields(option, (JComponent)component);
+                }
+	}
+}
     
    
 }
