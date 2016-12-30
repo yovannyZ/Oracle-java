@@ -10,43 +10,26 @@ package modelo;
  * @author yzeballos
  */
 public class Menu {
-    
-    private String Descripcion;
-    private boolean FormularioAsociado;
-    private int IdMenu;
+     //Id_Menu, Id_MenuPadre, DescripcionMenu, PosicionMenu, HabilitadoMenu, UrlMenu, FormularioAsociado
+    private int Id;
     private int IdMenuPadre;
+    private String Descripcion;
     private int PosicionMenu;
     private boolean Habilitado;
     private String UrlMenu;
-    private int IdPerfil;
+    private boolean FormularioAsociado;
+    
     private boolean Lectura;
     private boolean Escritura;
     private boolean Eliminacion;
+    private boolean Activado;
 
-    public String getDescripcion() {
-        return Descripcion;
+    public int getId() {
+        return Id;
     }
 
-    public void setDescripcion(String Descripcion) {
-        this.Descripcion = Descripcion;
-    }
-
-    public boolean isFormularioAsociado() {
-        return FormularioAsociado;
-    }
-
-    public void setFormularioAsociado(boolean FormularioAsociado) {
-        this.FormularioAsociado = FormularioAsociado;
-    }
-
-   
-
-    public int getIdMenu() {
-        return IdMenu;
-    }
-
-    public void setIdMenu(int IdMenu) {
-        this.IdMenu = IdMenu;
+    public void setId(int Id) {
+        this.Id = Id;
     }
 
     public int getIdMenuPadre() {
@@ -55,6 +38,14 @@ public class Menu {
 
     public void setIdMenuPadre(int IdMenuPadre) {
         this.IdMenuPadre = IdMenuPadre;
+    }
+
+    public String getDescripcion() {
+        return Descripcion;
+    }
+
+    public void setDescripcion(String Descripcion) {
+        this.Descripcion = Descripcion;
     }
 
     public int getPosicionMenu() {
@@ -81,12 +72,8 @@ public class Menu {
         this.UrlMenu = UrlMenu;
     }
 
-    public int getIdPerfil() {
-        return IdPerfil;
-    }
-
-    public void setIdPerfil(int IdPerfil) {
-        this.IdPerfil = IdPerfil;
+    public boolean isFormularioAsociado() {
+        return FormularioAsociado;
     }
 
     public boolean isLectura() {
@@ -113,13 +100,17 @@ public class Menu {
         this.Eliminacion = Eliminacion;
     }
 
-    public Menu() {
+    public boolean isActivado() {
+        return Activado;
     }
 
+    public void setActivado(boolean Activado) {
+        this.Activado = Activado;
+    }
+    
 
-    
-    
-    
 
-    
+    public void setFormularioAsociado(boolean FormularioAsociado) {
+        this.FormularioAsociado = FormularioAsociado;
+    }    
 }

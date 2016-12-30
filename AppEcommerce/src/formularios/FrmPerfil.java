@@ -5,12 +5,18 @@
  */
 package formularios;
 
+import dao.MenuDAO;
 import dao.PerfilDAO;
+import dao.PermisosPerfilesDAO;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import modelo.Menu;
 import modelo.Perfil;
+import modelo.PerfilesPer;
+import modelo.PerfilesPermisos;
+
 
 
 /**
@@ -20,6 +26,8 @@ import modelo.Perfil;
 public class FrmPerfil extends javax.swing.JInternalFrame {
 
     PerfilDAO perfilDAo= new PerfilDAO();
+    MenuDAO menuDao = new MenuDAO();
+    PermisosPerfilesDAO permisosPerfilesDao = new PermisosPerfilesDAO();
     Perfil perfil;
     /**
      * Creates new form FrmPerfil
@@ -59,6 +67,10 @@ public class FrmPerfil extends javax.swing.JInternalFrame {
         jLabel5 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         txtDescripcion = new javax.swing.JTextArea();
+        btnPermisos = new javax.swing.JButton();
+        jPanel4 = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tbListadoMenus = new javax.swing.JTable();
 
         setClosable(true);
         setIconifiable(true);
@@ -83,7 +95,7 @@ public class FrmPerfil extends javax.swing.JInternalFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel3)
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         tpPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -198,18 +210,27 @@ public class FrmPerfil extends javax.swing.JInternalFrame {
         txtDescripcion.setRows(5);
         jScrollPane2.setViewportView(txtDescripcion);
 
+        btnPermisos.setText("Permisos");
+        btnPermisos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPermisosActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(157, 157, 157)
+                .addGap(141, 141, 141)
                 .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnPermisos, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(102, Short.MAX_VALUE)
+                .addContainerGap(122, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2)
@@ -238,14 +259,46 @@ public class FrmPerfil extends javax.swing.JInternalFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnPermisos, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(90, 90, 90))
         );
 
         tpPanel.addTab("Mantenimiento", jPanel2);
+
+        tbListadoMenus.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        tbListadoMenus.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        tbListadoMenus.setMinimumSize(new java.awt.Dimension(10, 0));
+        jScrollPane4.setViewportView(tbListadoMenus);
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(13, Short.MAX_VALUE))
+        );
+
+        tpPanel.addTab("Permisos", jPanel4);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -262,7 +315,8 @@ public class FrmPerfil extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(tpPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(tpPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
@@ -285,11 +339,6 @@ public class FrmPerfil extends javax.swing.JInternalFrame {
         Listar(Integer.parseInt(this.txtBuscar.getText()));
     }//GEN-LAST:event_txtBuscarActionPerformed
 
-    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        Limpiar();
-        this.tpPanel.setSelectedIndex(0);
-    }//GEN-LAST:event_btnCancelarActionPerformed
-
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
 
         if(this.txtId.isEnabled()){
@@ -297,8 +346,18 @@ public class FrmPerfil extends javax.swing.JInternalFrame {
         }else{
             Actualizar();
         }
-
+        
     }//GEN-LAST:event_btnAgregarActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        Limpiar();
+        this.tpPanel.setSelectedIndex(0);
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnPermisosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPermisosActionPerformed
+       int id = ObtenerCodigo();
+       ListarPermisos(id);
+    }//GEN-LAST:event_btnPermisosActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -307,6 +366,7 @@ public class FrmPerfil extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnNuevo;
     private javax.swing.JButton btnNuevo1;
+    private javax.swing.JButton btnPermisos;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -315,9 +375,12 @@ public class FrmPerfil extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTable tbListado;
+    private javax.swing.JTable tbListadoMenus;
     private javax.swing.JTabbedPane tpPanel;
     private javax.swing.JTextField txtBuscar;
     private javax.swing.JTextArea txtDescripcion;
@@ -325,7 +388,7 @@ public class FrmPerfil extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
 
-    private void Limpiar(){
+private void Limpiar(){
     this.txtId.setText("");
     this.txtDescripcion.setText("");
     this.txtNombre.setText("");
@@ -369,6 +432,7 @@ private void Listar(int codigo){ // si codigo= 0 : listar todo , sino buscar las
 }
 
 private void Agregar(){
+    
     boolean rpt = false;
     int id = "".equals(this.txtId.getText()) ? 0 : Integer.parseInt(this.txtId.getText());
     String nombrePerfil = this.txtNombre.getText();
@@ -376,12 +440,6 @@ private void Agregar(){
 
     perfil = new Perfil(id, nombrePerfil,descripcion);
     
-    try {
-        rpt = perfilDAo.Agregar(perfil);
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, e.getMessage());
-        return;
-    }
     
 
     if(rpt){
@@ -422,6 +480,28 @@ private void Actualizar(){
     String descripcion = this.txtDescripcion.getText();
 
     perfil = new Perfil(id, nombrePerfil,descripcion);
+    
+    List<Object> lista  = new ArrayList<>();
+     //Agregar Permisos
+//     try {
+//        permisosPerfilesDao.Eliminar(id);
+//        
+//    } catch (Exception e) {
+//         JOptionPane.showMessageDialog(this, e.getMessage());
+//    }
+    for (int i = 0; i < this.tbListadoMenus.getRowCount(); i++) {
+            for (int j = 0; j <  this.tbListadoMenus.getColumnCount(); j++) {
+		lista.add(this.tbListadoMenus.getValueAt(i, j));
+		}
+            System.out.println();
+	}
+    
+    try {
+        rpt = perfilDAo.Agregar(perfil);
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, e.getMessage());
+        return;
+    }
     
     try {
         rpt = perfilDAo.Actualizar(perfil);
@@ -483,5 +563,84 @@ private void Eliminar(){
 private void Buscar(int id){ 
     Listar(id);
 }
+ 
+private void ListarPermisos(int idPerfil){ // si codigo= 0 : listar todo , sino buscar las concidencias
+    
+     this.tpPanel.setSelectedIndex(2);
+      tbListadoMenus.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Id", "Nombre menú","Activado","Lectura","Escritura","Eliminacion"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Object.class,java.lang.Boolean.class, java.lang.Boolean.class,java.lang.Boolean.class,java.lang.Boolean.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+
+    DefaultTableModel modelo = (DefaultTableModel)this.tbListadoMenus.getModel();
+    
+    List<Menu> listaMenus = new ArrayList<>();
+     List<PerfilesPermisos> listaPerfilesPermisos = new ArrayList<>();
+    try {
+         listaMenus = menuDao.Listar();//Perfil del usuario
+         listaPerfilesPermisos =  listaPermisos(idPerfil);
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, e.getMessage());
+        return;
+    }
+    
+    Object[] fila = new Object[modelo.getColumnCount()];
+    
+    for(int i = 0; i <listaMenus.size(); i++){
+         for(int j = 0; j <listaPerfilesPermisos.size(); j++){
+             if(listaMenus.get(i).getId() == listaPerfilesPermisos.get(j).getMenu().getId()){
+                 listaMenus.get(i).setActivado(listaPerfilesPermisos.get(j).isActivado());
+                 listaMenus.get(i).setLectura(listaPerfilesPermisos.get(j).isLectura());
+                 listaMenus.get(i).setEscritura(listaPerfilesPermisos.get(j).isEscritura());
+                 listaMenus.get(i).setEliminacion(listaPerfilesPermisos.get(j).isEliminacion());
+             }
+         }
+    }
+    for ( int i = 0; i<listaMenus.size();i++) {
+         fila[0] = listaMenus.get(i) .getId();
+         fila[1] = listaMenus.get(i).getDescripcion();
+         fila[2] = listaMenus.get(i).isActivado();
+         fila[3] = listaMenus.get(i).isLectura();
+         fila[4] = listaMenus.get(i).isEscritura();
+         fila[5] = listaMenus.get(i).isEliminacion();
+         modelo.addRow(fila);
+    }
+    
+    tbListadoMenus.getColumnModel().getColumn(0).setPreferredWidth(40);
+    tbListadoMenus.getColumnModel().getColumn(1).setPreferredWidth(200);
+    tbListadoMenus.getColumnModel().getColumn(2).setPreferredWidth(80);
+    tbListadoMenus.getColumnModel().getColumn(3).setPreferredWidth(80);
+    tbListadoMenus.getColumnModel().getColumn(4).setPreferredWidth(80);
+    tbListadoMenus.getColumnModel().getColumn(5).setPreferredWidth(80);
+}
+
+private List<PerfilesPermisos> listaPermisos(int codigo){
+    
+    List<PerfilesPermisos> lista =  new ArrayList<>();
+    PermisosPerfilesDAO permisoDao = new PermisosPerfilesDAO();
+    
+    try {
+        lista = permisoDao.Listar(codigo);
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, e.getMessage());
+    }
+    
+    return lista;
+}
+ 
+ 
+ 
     
 }

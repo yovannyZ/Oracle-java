@@ -20,36 +20,57 @@ public class MenuDAO {
     
     Connection cn = Conexion.getInstance().Conectar();
     
-     public List<Menu> ListarMenus(int perfil) {
+     public List<Menu> Listar() throws Exception{
          List<Menu> lista = new ArrayList<Menu>();
          Menu menu;
         
-        try {
-            String query="select * from  [Qry_PerfilesPermisos] where id_perfil = "+ perfil;
-            Statement st = cn.createStatement();
-            ResultSet rs =st.executeQuery(query);
-            while(rs.next()){
-                menu =  new Menu();
-                menu.setDescripcion(rs.getString(1));
-                menu.setFormularioAsociado(rs.getBoolean(2));
-                menu.setIdMenu(rs.getInt(3));
-                menu.setIdMenuPadre(rs.getInt(4));
-                menu.setPosicionMenu(rs.getInt(5));
-                menu.setHabilitado(rs.getBoolean(6));
-                menu.setUrlMenu(rs.getString(7));
-                menu.setIdPerfil(rs.getInt(8));
-                menu.setLectura(rs.getBoolean(9));
-                menu.setEscritura(rs.getBoolean(10));
-                menu.setEliminacion(rs.getBoolean(11));
-               
-                lista.add(menu);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        
+        String query="select * from  tbl_menus where id_menuPadre <> 0 ";
+        Statement st = cn.createStatement();
+        ResultSet rs =st.executeQuery(query);
+        while(rs.next()){
+            menu =  new Menu();
+            menu.setId(rs.getInt(1));
+            menu.setIdMenuPadre(rs.getInt(2));
+            menu.setDescripcion(rs.getString(3));
+            menu.setPosicionMenu(rs.getInt(4));
+            menu.setHabilitado(rs.getBoolean(5));
+            menu.setUrlMenu(rs.getString(6));
+            menu.setFormularioAsociado(rs.getBoolean(7));
+            menu.setHabilitado(false);
+            menu.setLectura(false);
+            menu.setEscritura(false);
+            menu.setEliminacion(false);
+            
+            lista.add(menu);
+            
+         }
         return lista;
     }
      
-    
+     public Menu Buscar(int id) throws Exception{
+         
+         Menu menu =  null;
+        
+        String query="select * from  tbl_menus where id_menu =" + id;
+        Statement st = cn.createStatement();
+        ResultSet rs =st.executeQuery(query);
+        while(rs.next()){
+            menu =  new Menu();
+            menu.setId(rs.getInt(1));
+            menu.setIdMenuPadre(rs.getInt(2));
+            menu.setDescripcion(rs.getString(3));
+            menu.setPosicionMenu(rs.getInt(4));
+            menu.setHabilitado(rs.getBoolean(5));
+            menu.setUrlMenu(rs.getString(6));
+            menu.setFormularioAsociado(rs.getBoolean(7));
+            menu.setHabilitado(false);
+            menu.setLectura(false);
+            menu.setEscritura(false);
+            menu.setEliminacion(false);
+            
+         }
+        return menu;
+    }
+     
+     
 }

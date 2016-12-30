@@ -103,6 +103,7 @@ public class FrmProducto extends javax.swing.JInternalFrame {
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setIconifiable(true);
+        setName("FrmProducto"); // NOI18N
 
         jPanel3.setBackground(new java.awt.Color(102, 102, 102));
 

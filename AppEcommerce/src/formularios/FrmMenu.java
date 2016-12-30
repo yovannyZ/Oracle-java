@@ -5,15 +5,17 @@
  */
 package formularios;
 
-import dao.MenuDAO;
-import java.awt.Component;
+import dao.PermisosPerfilesDAO;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
-import javax.swing.JComponent;
+import javax.swing.JInternalFrame;
 import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import modelo.Menu;
-import util.MyMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.MenuElement;
+import modelo.PerfilesPer;
+import modelo.PerfilesPermisos;
+import util.UsuarioUtil;
 
 /**
  *
@@ -23,6 +25,9 @@ public class FrmMenu extends javax.swing.JFrame {
 
     JMenu menu;
     public  int perfil;
+    String variable;
+    List<String> nombreVentanas = new ArrayList<>();
+    JInternalFrame ventana ;
 
     
     private static final long serialVersionUID = 4436990274867781357L;
@@ -31,9 +36,13 @@ public class FrmMenu extends javax.swing.JFrame {
      */
     public FrmMenu() {
         initComponents();
+       
+       
         this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
         this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
-        IconMenuItem(FrmUsuario, "/img/comprobado.png");
+        IconMenuItem(mnUsuario, "/img/comprobado.png");
+      
+       
        
     }
 
@@ -46,12 +55,20 @@ public class FrmMenu extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jMenu1 = new javax.swing.JMenu();
         escritorio = new javax.swing.JDesktopPane();
         jMenuBar2 = new javax.swing.JMenuBar();
         mnTabla = new javax.swing.JMenu();
-        FrmUsuario = new javax.swing.JMenuItem();
+        mnUsuario = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         FrmProducto = new javax.swing.JMenuItem();
+        mnCategoria = new javax.swing.JMenuItem();
+        mnSubCategoria = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        mnPerfilUsuario = new javax.swing.JMenuItem();
+        mnPermisosUsuarios = new javax.swing.JMenuItem();
+
+        jMenu1.setText("jMenu1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -69,30 +86,60 @@ public class FrmMenu extends javax.swing.JFrame {
         );
         escritorioLayout.setVerticalGroup(
             escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 112, Short.MAX_VALUE)
+            .addGap(0, 250, Short.MAX_VALUE)
         );
 
         mnTabla.setText("Tablas");
-        mnTabla.setName("Tablas"); // NOI18N
+        mnTabla.setContentAreaFilled(false);
+        mnTabla.setName("mnTablas"); // NOI18N
 
-        FrmUsuario.setText("Usuarios");
-        FrmUsuario.setName("FrmUsuario"); // NOI18N
-        FrmUsuario.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                FrmUsuarioActionPerformed(evt);
-            }
-        });
-        mnTabla.add(FrmUsuario);
+        mnUsuario.setText("Usuarios");
+        mnUsuario.setEnabled(false);
+        mnUsuario.setName("mnUsuario"); // NOI18N
+        mnTabla.add(mnUsuario);
 
         jMenu2.setText("Almacen");
+        jMenu2.setEnabled(false);
+        jMenu2.setName("mnAlmacen"); // NOI18N
 
         FrmProducto.setText("Producto");
-        FrmProducto.setName("FrmProducto"); // NOI18N
+        FrmProducto.setEnabled(false);
+        FrmProducto.setName("mnProducto"); // NOI18N
         jMenu2.add(FrmProducto);
+
+        mnCategoria.setText("Categoria");
+        mnCategoria.setEnabled(false);
+        mnCategoria.setName("mnCategoria"); // NOI18N
+        jMenu2.add(mnCategoria);
+
+        mnSubCategoria.setText("Sub Categoria");
+        mnSubCategoria.setEnabled(false);
+        mnSubCategoria.setName("mnSubCategoria"); // NOI18N
+        jMenu2.add(mnSubCategoria);
 
         mnTabla.add(jMenu2);
 
         jMenuBar2.add(mnTabla);
+
+        jMenu3.setLabel("Seguridad");
+        jMenu3.setName("mnSeguridad"); // NOI18N
+
+        mnPerfilUsuario.setText("Perfil Usuario");
+        mnPerfilUsuario.setEnabled(false);
+        mnPerfilUsuario.setName("mnPerfil"); // NOI18N
+        mnPerfilUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnPerfilUsuarioActionPerformed(evt);
+            }
+        });
+        jMenu3.add(mnPerfilUsuario);
+
+        mnPermisosUsuarios.setText("Permisos Usuarios");
+        mnPermisosUsuarios.setEnabled(false);
+        mnPermisosUsuarios.setName("mnPermisosUsuarios"); // NOI18N
+        jMenu3.add(mnPermisosUsuarios);
+
+        jMenuBar2.add(jMenu3);
 
         setJMenuBar(jMenuBar2);
 
@@ -110,9 +157,11 @@ public class FrmMenu extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void FrmUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FrmUsuarioActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_FrmUsuarioActionPerformed
+    private void mnPerfilUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnPerfilUsuarioActionPerformed
+       FrmPerfil frm  = new FrmPerfil();
+       this.escritorio.add(frm);
+       frm.setVisible(true);
+    }//GEN-LAST:event_mnPerfilUsuarioActionPerformed
 
     /**
      * @param args the command line arguments
@@ -151,43 +200,49 @@ public class FrmMenu extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem FrmProducto;
-    private javax.swing.JMenuItem FrmUsuario;
     public javax.swing.JDesktopPane escritorio;
+    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar2;
+    private javax.swing.JMenuItem mnCategoria;
+    private javax.swing.JMenuItem mnPerfilUsuario;
+    private javax.swing.JMenuItem mnPermisosUsuarios;
+    private javax.swing.JMenuItem mnSubCategoria;
     private javax.swing.JMenu mnTabla;
+    private javax.swing.JMenuItem mnUsuario;
     // End of variables declaration//GEN-END:variables
 
-    public void CargarMenus(){
-        MenuDAO menuDao= new MenuDAO();
-        List<Menu> listaMenus = menuDao.ListarMenus(perfil);//Perfil del usuario
-        for (int i = 0; i < listaMenus.size(); i++) {
-            
-            if(listaMenus.size() > 0){
-                
-                if(listaMenus.get(i).getIdMenuPadre() == 0){
-                 menu = new JMenu(listaMenus.get(i).getDescripcion());
-                 menu.setName(""+listaMenus.get(i).getIdMenu());
-                 }
-                 for (int j = 0; j < listaMenus.size(); j++) {
-                     
-                     if(listaMenus.get(i).getIdMenu() == listaMenus.get(j).getIdMenuPadre()){
-                         addMenuItems(menu,listaMenus.get(j).getDescripcion(),listaMenus.get(j).getUrlMenu(),listaMenus.get(j).isHabilitado());
-                     }   
-                }  
-            }
-            jMenuBar2.add(menu); ///Agrego Menus
-        }
-    }
+//    public void CargarMenus(){
+//        PermisosPerfilesDAO menuDao= new PermisosPerfilesDAO();
+//        List<Menu> listaMenus = menuDao.ListarMenus(perfil);//Perfil del usuario
+//        for (int i = 0; i < listaMenus.size(); i++) {
+//            
+//            if(listaMenus.size() > 0){
+//                
+//                if(listaMenus.get(i).getIdMenuPadre() == 0){
+//                 menu = new JMenu(listaMenus.get(i).getDescripcion());
+//                 menu.setName(""+listaMenus.get(i).getIdMenu());
+//                 }
+//                 for (int j = 0; j < listaMenus.size(); j++) {
+//                     
+//                     if(listaMenus.get(i).getIdMenu() == listaMenus.get(j).getIdMenuPadre()){
+//                         addMenuItems(menu,listaMenus.get(j).getDescripcion(),listaMenus.get(j).getUrlMenu(),listaMenus.get(j).isHabilitado());
+//                     }   
+//                }  
+//            }
+//            jMenuBar2.add(menu); ///Agrego Menus
+//        }
+//    }
     
-    private void addMenuItems(JMenu menu, String texto , String frm, boolean habilitado) {
+   /* private void addMenuItems(String frm, boolean habilitado,JMenuItem mn) {
 		
-            MyMenuItem m = new MyMenuItem(texto, frm,this);
+            MyMenuItem m = new MyMenuItem(frm,this);
             m.setEnabled(habilitado);
-            menu.add(m);  //Agrego MenuItems
+           // menu.add(m);  //Agrego MenuItems
             m.addActionListener(m);
 
-	}
+	}*/
     
     private void IconMenuItem(javax.swing.JMenuItem menuItem , String url){
         
@@ -202,23 +257,62 @@ public class FrmMenu extends javax.swing.JFrame {
 
     }
     
-    private void enableFields(boolean option, JComponent jCompo) {
-        MenuDAO menuDao= new MenuDAO();
+    /*public void enableFields() {
+        PermisosPerfilesDAO menuDao= new PermisosPerfilesDAO();
         List<Menu> listaMenus = menuDao.ListarMenus(perfil);
-	Component [] arrayCompo = jCompo.getComponents();
+	Component [] arrayCompo = this.jMenuBar2.getComponents();
 	for (Component component : arrayCompo) {
-		if(component instanceof JMenu){
-                    if((JMenu) component).getName() == )
-                    ((JMenu) component).setEnabled(option);
-                }
-		if(component instanceof JMenuItem){
-                    ((JMenuItem) component).setEnabled(option);
-                }
-		if(component instanceof JComponent)  {
-                    enableFields(option, (JComponent)component);
-                }
+            for(int i = 0; i < listaMenus.size(); i++){
+                if(component instanceof JMenu){
+                    String nombre = ((JMenu) component).getName();
+                    if(nombre.equals(listaMenus.get(i).getUrlMenu())){
+                        ((JMenu) component).setEnabled(listaMenus.get(i).isHabilitado());
+                    }
+                    
+                     
+                    }
+                    if(component instanceof JMenuItem){
+                        String nombre = ((JMenuItem) component).getName();
+                        if(nombre.equals(listaMenus.get(i).getUrlMenu())){
+                        ((JMenuItem) component).setEnabled(listaMenus.get(i).isHabilitado());
+                    }
+                        
+                    }
+                   
+            }
+		
 	}
-}
+ }*/
     
-   
+    public void recorrerMenu(MenuElement[] topLevelElements) {
+        
+        PermisosPerfilesDAO menuDao= new PermisosPerfilesDAO();
+        List<PerfilesPermisos> listaPerfilesPermisos = new ArrayList<>() ;
+        
+        try {
+             listaPerfilesPermisos = menuDao.Listar(UsuarioUtil.getPerfil());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+       
+        
+        for (MenuElement menuElement : topLevelElements) {
+                    
+            for(int i = 0; i < listaPerfilesPermisos.size(); i++){
+                 String nombre = menuElement.getComponent().getName();
+                 
+                 if(listaPerfilesPermisos.get(i).getMenu().getIdMenuPadre() != 0){
+                     if(nombre.equals(listaPerfilesPermisos.get(i).getMenu().getUrlMenu())){
+                      menuElement.getComponent().setEnabled(listaPerfilesPermisos.get(i).isActivado());
+                    }
+                 }
+            }
+                    
+            for (MenuElement subElement : menuElement.getSubElements()) {
+                if (subElement.getSubElements().length != 0) {
+                    recorrerMenu(subElement.getSubElements());
+                }
+            }
+        }
+    } 
 }

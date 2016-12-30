@@ -24,8 +24,8 @@ public class MyMenuItem extends javax.swing.JMenuItem implements ActionListener{
     private String frm;
     FrmMenu frmMenu;
 
-    public MyMenuItem(String text, String frm,FrmMenu menu) {
-     super(text);
+    public MyMenuItem(String frm,FrmMenu menu) {
+     super();
      this.frm = frm;
      this.frmMenu = menu;
      }
@@ -46,10 +46,10 @@ public class MyMenuItem extends javax.swing.JMenuItem implements ActionListener{
 		
             try {
                 
-                JInternalFrame ventana =  ((JInternalFrame) Class.forName(frm).newInstance());
+                JInternalFrame ventana =  ((JInternalFrame) Class.forName("formularios."+frm).newInstance());
                 this.frmMenu.escritorio.add(ventana);
                 ventana.setVisible(true);
-            } catch (Exception ex) {
+            } catch (ClassNotFoundException | IllegalAccessException | InstantiationException ex) {
                 ex.printStackTrace();
             } 
 	}

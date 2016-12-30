@@ -11,8 +11,10 @@ import java.awt.Image;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.MenuElement;
 import modelo.Usuario;
 import util.PasswordUtil;
+import util.UsuarioUtil;
 
 /**
  *
@@ -187,8 +189,9 @@ public class FrmLogin extends javax.swing.JFrame {
             if(usuario != null){
                 if(PasswordUtil.ValidatePass(this.txtContrasena.getText(), usuario.getContrasena(), usuario.getSalt())){
                     FrmMenu menu = new FrmMenu();
-                    menu.perfil = usuario.getPerfil().getId();
-                  //  menu.CargarMenus();
+                    UsuarioUtil.setPerfil( usuario.getPerfil().getId());
+                    MenuElement[] topLevelElements = menu.getJMenuBar().getSubElements();
+                    menu.recorrerMenu(topLevelElements);
                     this.setVisible(false);
                     menu.setVisible(true);
                     

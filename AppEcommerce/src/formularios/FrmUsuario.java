@@ -69,6 +69,7 @@ public class FrmUsuario extends javax.swing.JInternalFrame {
 
         setClosable(true);
         setIconifiable(true);
+        setName("FrmUsuario"); // NOI18N
 
         jPanel3.setBackground(new java.awt.Color(102, 102, 102));
 
